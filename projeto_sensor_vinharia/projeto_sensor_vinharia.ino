@@ -3,7 +3,7 @@
  
 // Definindo as variáveis e pinos
 #define DHTPIN 2 // Pino digital onde o DHT22 está conectado
-#define DHTTYPE DHT11 // Define o modelo do sensor (DHT22)
+#define DHTTYPE DHT22 // Define o modelo do sensor (DHT22)
 DHT dht(DHTPIN, DHTTYPE); // Inicializa o sensor DHT22
 #define LDRPIN A0 // Pino analógico onde o LDR está conectado
 int LED_VERDE = 5; // Pino onde o LED verde está conectado
@@ -136,7 +136,7 @@ void setup() {
   // Iniciando o display LCD 16x2
   lcd.begin(16, 2);
  
- 
+ // Criando os icones
   lcd.createChar(10, solA);
   lcd.createChar(5, solM);
   lcd.createChar(6, aguaB);
@@ -257,7 +257,7 @@ void loop() {
   delay(5000); // Aguarda 5 segundos antes da próxima leitura
    
   // Verifica a intensidade da luz, temperatura e umidade e aciona o LED e buzzer correspondente
-  if((IntensidadeLuz < 45) && (t >= 20 && t < 30) && (h >= 40 && h < 65)) {
+  if((IntensidadeLuz < 45) && (t >= 20 && t < 30) && (h >= 40 && h < 60)) {
     digitalWrite(LED_VERDE, HIGH); // Acende o LED verde
     digitalWrite(LED_AMARELO, LOW); // Apaga o LED amarelo
     digitalWrite(LED_VERMELHO, LOW); // Apaga o LED vermelho
@@ -273,17 +273,18 @@ void loop() {
     tone(BUZZER, 500);
     delay(100); // Espera 100 milissegundos
     noTone(BUZZER); // Desliga o buzzer
-  } else if(IntensidadeLuz >= 70 || t >= 30 || h >= 65) {
+  } else if(IntensidadeLuz >= 70 || t >= 30 || h >= 60) {
     digitalWrite(LED_VERDE, LOW); // Apaga o LED verde
     digitalWrite(LED_AMARELO, LOW); // Apaga o LED amarelo
     digitalWrite(LED_VERMELHO, HIGH); // Acende o LED vermelho
  
     tone(BUZZER, 500); // Liga o buzzer com uma frequência de 500 Hz
-    delay(500); // Espera 1 milisegundo
+    delay(500); // Espera 500 milisegundos
     noTone(BUZZER); // Desliga o buzzer
   }
 }
- 
+
+// Função da logo do grupo
 void logo(){
   byte aranhaTraseira1[8] = {
   B00000,
@@ -355,87 +356,34 @@ byte aranhaFrontal2[8] = {
  
 }
  
-void temperatura(){
-    byte temperaturaA[8] = { //Temperatura Alta
-    B00100,
-    B01110,
-    B01110,
-    B01110,
-    B01110,
-    B11111,
-    B11111,
-    B01110
-    };
- 
- 
-    lcd.createChar(1, temperaturaA);
-    lcd.setCursor(0, 1);
-    lcd.write(1);
-    }
- 
-  void luminosidade(){
-    byte solB[8] = { //Luminosidade Alta
-      B00000,
-      B00000,
-      B00000,
-      B01000,
-      B11100,
-      B01110,
-      B10100,
-      B00000
-    };
- 
-    lcd.createChar(2, solB);
-    lcd.setCursor(0, 0);
-    lcd.write(2);
-  }
- 
-  void umidade(){
-    byte aguaA[8] = { //umidade Alta
-      B00100,
-      B00100,
-      B01110,
-      B01110,
-      B11111,
-      B11111,
-      B11111,
-      B01110
-  };
-    lcd.createChar(3,aguaA);
-    lcd.setCursor(9, 1);
-    lcd.write(3);
-  }
- 
-  void luzAlta(){
-    byte solA[8] = { //Luminosidade Alta
-      B00000,
-      B00000,
-      B10101,
-      B01110,
-      B11111,
-      B01110,
-      B10101,
-      B00000
-    };
- 
-    lcd.createChar(4, solA);
-    lcd.setCursor(0,0);
-    lcd.write(4);
-  }
 
-  void temperaturaMe(){
-    byte temperaturaM[8] = { //Temperatura Média
-      B00100,
-      B01010,
-      B01010,
-      B01110,
-      B01110,
-      B11111,
-      B11111,
-      B01110
-    };
+// Icones
+void temperatura() {
+  lcd.createChar(1, temperaturaA);
+  lcd.setCursor(0, 1);
+  lcd.write(1);
+}
 
-    lcd.createChar(5,temperaturaM);
-    lcd.setCursor(0,1);
-    lcd.write(5);
-  }
+void luminosidade() {
+  lcd.createChar(2, solB);
+  lcd.setCursor(0, 0);
+  lcd.write(2);
+}
+
+void umidade() {
+  lcd.createChar(3, aguaA);
+  lcd.setCursor(9, 1);
+  lcd.write(3);
+}
+
+void luzAlta() {
+  lcd.createChar(4, solA);
+  lcd.setCursor(0, 0);
+  lcd.write(4);
+}
+
+void temperaturaMe() {
+  lcd.createChar(5, temperaturaM);
+  lcd.setCursor(0, 1);
+  lcd.write(5);
+}
